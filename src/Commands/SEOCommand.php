@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace 34ML\SEO\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class SEOCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-seo';
 
     public $description = 'My command';
 
