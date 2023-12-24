@@ -8,8 +8,6 @@ class SeoSiteMap
 {
     /**
      * Array of the all the items in the sitemap
-     *
-     * @var array
      */
     private array $items = [];
 
@@ -35,10 +33,6 @@ class SeoSiteMap
 
     /**
      * Attach the model items
-     *
-     * @param array $sitemap_models
-     *
-     * @return void
      */
     private function attachModelItems(array $sitemap_models = []): void
     {
@@ -46,9 +40,9 @@ class SeoSiteMap
             $items = $sitemap_model::getSitemapItems();
 
             if ($items && $items->count() > 0) {
-                $this->items = array_merge($this->items, $items->map(function($item){
-                    return (object)[
-                        'url'     => $item->getSitemapItemUrl(),
+                $this->items = array_merge($this->items, $items->map(function ($item) {
+                    return (object) [
+                        'url' => $item->getSitemapItemUrl(),
                         'last_mod' => $item->getSitemapItemLastModified(),
                     ];
                 })->toArray());
@@ -59,24 +53,22 @@ class SeoSiteMap
     /**
      * Attach a custom sitemap item
      *
-     * @param string $path    Path on the current site
-     * @param string|null $last_mod Date of last edit
-     *
+     * @param  string  $path    Path on the current site
+     * @param  string|null  $last_mod Date of last edit
      * @return SeoSiteMap
      */
-    public function attachCustom(string $path, string $last_mod = null): static
+    public function attachCustom(string $path, ?string $last_mod = null): static
     {
-        $this->items[] = (object)[
+        $this->items[] = (object) [
             'url' => url($path),
-            'last_mod' => $last_mod
+            'last_mod' => $last_mod,
         ];
+
         return $this;
     }
 
     /**
      * Return sitemap items as array
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -85,8 +77,6 @@ class SeoSiteMap
 
     /**
      * Return xml for sitemap items
-     *
-     * @return string
      */
     public function toXml(): string
     {
@@ -97,8 +87,8 @@ class SeoSiteMap
         foreach ($this->items as $item) {
             $use_last_mod = $this->use_last_mod ? ($item->last_mod ?? $last_mod) : null;
             $xml .= '<url>'.
-                '<loc>' . (str_starts_with($item->url, '/') ? url($item->url) : $item->url) . '</loc>'.
-                ($use_last_mod ? '<lastmod>' . $use_last_mod . '</lastmod>' : '').
+                '<loc>'.(str_starts_with($item->url, '/') ? url($item->url) : $item->url).'</loc>'.
+                ($use_last_mod ? '<lastmod>'.$use_last_mod.'</lastmod>' : '').
                 '</url>';
 
             if ($item->last_mod) {

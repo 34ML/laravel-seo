@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\Storage;
 trait SeoTrait
 {
     private array $title = [];
+
     private array $description = [];
+
     private array $keywords = [];
+
     private $image = null;
+
     private $follow = null;
 
     /**
      * Get the seo_model relationship.
-     *
-     * @return MorphOne
      */
     public function seo_model(): MorphOne
     {
@@ -27,7 +29,6 @@ trait SeoTrait
     /**
      * Return the seo_model data as array
      *
-     * @return array
      * @throws \Exception
      */
     public function getSeoModel(): array
@@ -45,15 +46,15 @@ trait SeoTrait
                     'keywords' => $this->keywords,
                     'image' => $this->image,
                     'follow_type' => $this->follow,
-                    'params' => (object)[
-                        'title_format' => $formatter
-                    ]
+                    'params' => (object) [
+                        'title_format' => $formatter,
+                    ],
                 ];
             }
         }
 
         if ($attrs && isset($attrs['image']) && $attrs['image']) {
-            $attrs['image_path'] = !str_contains($attrs['image'], '//')
+            $attrs['image_path'] = ! str_contains($attrs['image'], '//')
                 ? Storage::disk(config('seo.disk'))->url($attrs['image'])
                 : $attrs['image'];
         }
@@ -63,8 +64,6 @@ trait SeoTrait
 
     /**
      * Get SEO title formatter
-     *
-     * @return
      */
     public function getSeoTitleFormatter()
     {
@@ -73,8 +72,6 @@ trait SeoTrait
 
     /**
      * Get default SEO title
-     *
-     * @return array
      */
     public function getSeoTitleDefault(): array
     {
@@ -83,8 +80,6 @@ trait SeoTrait
 
     /**
      * Get default SEO description
-     *
-     * @return array
      */
     public function getSeoDescriptionDefault(): array
     {
@@ -93,8 +88,6 @@ trait SeoTrait
 
     /**
      * Get default SEO title
-     *
-     * @return array
      */
     public function getSeoKeywordsDefault(): array
     {
@@ -103,8 +96,6 @@ trait SeoTrait
 
     /**
      * Get default SEO title
-     *
-     * @return string|null
      */
     public function getSeoImageDefault(): ?string
     {
@@ -113,8 +104,6 @@ trait SeoTrait
 
     /**
      * Get default SEO title
-     *
-     * @return string|null
      */
     public function getSeoFollowDefault(): ?string
     {
@@ -122,7 +111,6 @@ trait SeoTrait
     }
 
     /**
-     * @return array
      * @throws \Exception
      */
     public function buildSeoForCurrentLocale(): array
@@ -133,9 +121,9 @@ trait SeoTrait
         $locale = app()->getLocale();
         foreach ($translatable_keys as $key) {
             if (isset($seo[$key])) {
-                if (isset($seo[$key][$locale]) && !empty($seo[$key][$locale])) {
+                if (isset($seo[$key][$locale]) && ! empty($seo[$key][$locale])) {
                     $seo[$key] = $seo[$key][$locale];
-                } elseif (isset($seo[$key][$fallback_locale]) && !empty($seo[$key][$fallback_locale])) {
+                } elseif (isset($seo[$key][$fallback_locale]) && ! empty($seo[$key][$fallback_locale])) {
                     $seo[$key] = $seo[$key][$fallback_locale];
                 } else {
                     $seo[$key] = null;
@@ -144,23 +132,22 @@ trait SeoTrait
                 $seo[$key] = null;
             }
         }
+
         return $seo;
     }
 
-    /**
-     * @return bool
-     */
     private function validateTitleExistsForAnyLocale(): bool
     {
         $locale = app()->getLocale();
         $fallback_locale = config('seo.fallback_locale');
         $exists = false;
         $title = $this->title;
-        if (isset($title[$locale]) && !empty($title[$locale])) {
+        if (isset($title[$locale]) && ! empty($title[$locale])) {
             $exists = true;
-        } elseif (isset($title[$fallback_locale]) && !empty($title[$fallback_locale])) {
+        } elseif (isset($title[$fallback_locale]) && ! empty($title[$fallback_locale])) {
             $exists = true;
         }
+
         return $exists;
     }
 
@@ -192,53 +179,35 @@ trait SeoTrait
 
     }
 
-    /**
-     * @param string|null $value
-     * @param string|null $locale
-     */
-    public function addTitleDefault(string $value = null, string $locale = null): void
+    public function addTitleDefault(?string $value = null, ?string $locale = null): void
     {
-        if (!$locale) {
+        if (! $locale) {
             $locale = config('seo.fallback_locale');
         }
         $this->title[$locale] = $value;
     }
 
-    /**
-     * @param string|null $value
-     * @param string|null $locale
-     */
-    public function addDescriptionDefault(string $value = null, string $locale = null): void
+    public function addDescriptionDefault(?string $value = null, ?string $locale = null): void
     {
-        if (!$locale) {
+        if (! $locale) {
             $locale = config('seo.fallback_locale');
         }
         $this->description[$locale] = $value;
     }
 
-    /**
-     * @param string|null $value
-     * @param string|null $locale
-     */
-    public function addKeywordsDefault(string $value = null, string $locale = null): void
+    public function addKeywordsDefault(?string $value = null, ?string $locale = null): void
     {
-        if (!$locale) {
+        if (! $locale) {
             $locale = config('seo.fallback_locale');
         }
         $this->keywords[$locale] = $value;
     }
 
-    /**
-     * @param string|null $value
-     */
-    public function addImageDefault(string $value = null): void
+    public function addImageDefault(?string $value = null): void
     {
         $this->image = $value;
     }
 
-    /**
-     * @param string $value
-     */
     public function addFollowDefault(string $value): void
     {
         $this->follow = $value;

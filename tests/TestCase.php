@@ -1,10 +1,10 @@
 <?php
 
-namespace 34ML\SEO\Tests;
+namespace _34ML\SEO\Tests;
 
+use _34ML\SEO\SEOServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use 34ML\SEO\SEOServiceProvider;
 
 class TestCase extends Orchestra
 {

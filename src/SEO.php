@@ -20,7 +20,7 @@ class SEO extends Model
      * @var array
      */
     protected $hidden = [
-        'seo_model_type', 'created_at', 'updated_at'
+        'seo_model_type', 'created_at', 'updated_at',
     ];
 
     /**
@@ -37,15 +37,13 @@ class SEO extends Model
      */
     protected $casts = [
         'params' => 'object',
-        'title'=>'json',
-        'description'=>'json',
-        'keywords'=>'json',
+        'title' => 'json',
+        'description' => 'json',
+        'keywords' => 'json',
     ];
 
     /**
      * Get the owning seo_model model.
-     *
-     * @return MorphTo
      */
     public function seo_model(): MorphTo
     {
