@@ -1,19 +1,6 @@
-# This is my package laravel-seo
+# Laravel SEO
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/34ml/laravel-seo.svg?style=flat-square)](https://packagist.org/packages/34ml/laravel-seo)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/34ml/laravel-seo/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/34ml/laravel-seo/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/34ml/laravel-seo/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/34ml/laravel-seo/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/34ml/laravel-seo.svg?style=flat-square)](https://packagist.org/packages/34ml/laravel-seo)
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-seo.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-seo)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package will help you to manage your website SEO easily.
 
 ## Installation
 
@@ -40,20 +27,182 @@ This is the contents of the published config file:
 
 ```php
 return [
+/*
+    |--------------------------------------------------------------------------
+    | SEO status
+    |--------------------------------------------------------------------------
+    |
+    | Set SEO status, if its set to false then all pages will have
+    | the 'noindex, nofollow' follow type and also removed the meta tags except the title tag.
+    |
+    */
+
+    'seo_status' => env('SEO_STATUS', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sitemap status
+    |--------------------------------------------------------------------------
+    |
+    | Should there be a sitemap available
+    |
+    */
+    'sitemap_status' => env('SITEMAP_STATUS', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | SEO title formatter
+    |--------------------------------------------------------------------------
+    |
+    | If you want a specific default format for your SEO titles, then you can
+    | specify it here. Example could be ':text - Test site', then all pages would have
+    | the ' - Test site' appended to the actual SEO title.
+    |
+    */
+    'title_formatter' => ':text',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Follow type options
+    |--------------------------------------------------------------------------
+    |
+    | Here is all the possible follow types shown in the admin panel
+    | which is an array with key -> value.
+    |
+    */
+
+    'follow_type_options' => [
+        'index, follow' => 'Index and follow',
+        'noindex, follow' => 'No index and follow',
+        'index, nofollow' => 'Index and no follow',
+        'noindex, nofollow' => 'No index and no follow',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default follow type
+    |--------------------------------------------------------------------------
+    |
+    | Set the default follow type.
+    |
+    */
+    'default_follow_type' => env('SEO_DEFAULT_FOLLOW_TYPE', 'index, follow'),
+
+    /*
+    * SEO default image
+    */
+    'default_seo_image' => null,
+
+    /*
+      * SEO default title
+      */
+    'default_seo_title' => config('app.name'),
+
+    /*
+      * SEO default description
+      */
+    'default_seo_description' => null,
+
+    /*
+      * SEO default keywords
+     * ex : keyword1, keyword2, keyword3
+      */
+    'default_seo_keywords' => null,
+
+    /*
+     *
+     */
+    /*
+    |--------------------------------------------------------------------------
+    | Sitemap models
+    |--------------------------------------------------------------------------
+    |
+    | Insert all the laravel models which should be in the sitemap
+    |
+    */
+
+    'sitemap_models' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sitemap url
+    |--------------------------------------------------------------------------
+    |
+    | Set the path of the sitemap
+    |
+    */
+
+    'sitemap_path' => '/sitemap',
+
+    'disk' => env('SEO_IMAGE_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | Set the available locales in your project and fallback locale
+    |
+    */
+
+    'available_locales' => ['en'],
+    'fallback_locale' => 'en',
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-seo-views"
 ```
 
 ## Usage
 
+Find the model you want to have the SEO fields on, example could be App\Models\Page, then add the SeoTrait trait:
 ```php
-$sEO = new 34ML\SEO();
-echo $sEO->echoPhrase('Hello, 34ML!');
+use _34ML\SEO\Traits\SeoTrait;
+
+class Page extends Model
+{
+    use SeoTrait;
+    ...
+}
+```
+
+When you want the eloquent model to be shown in the sitemap then you need to add the SeoSiteMapTrait trait to it:
+```php
+use _34ML\SEO\Traits\SeoTrait;
+use _34ML\SEO\Traits\SeoSiteMapTrait;
+
+class Page extends Model
+{
+    use SeoTrait, SeoSiteMapTrait;
+    ...
+
+    /**
+     * Get the Page url by item
+     *
+     * @return string
+     */
+    public function getSitemapItemUrl()
+    {
+        return url($this->slug);
+    }
+
+    /**
+     * Query all the Page items which should be
+     * part of the sitemap (crawlable for google).
+     *
+     * @return Builder
+     */
+    public static function getSitemapItems()
+    {
+        return static::all();
+    }
+}
+```
+
+Then go to the top of your layout blade as the default is resources/views/welcome.blade.php:
+```html
+...
+<head>
+    @include('seo::seo')
+    ...
+</head>
 ```
 
 ## Testing
@@ -66,18 +215,9 @@ composer test
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
 ## Credits
 
-- [Ahmed Essam](https://github.com/aessam1306)
-- [All Contributors](../../contributors)
+- [Ahmed Essam](https://github.com/aessam13)
 
 ## License
 
