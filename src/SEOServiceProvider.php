@@ -18,7 +18,7 @@ class SEOServiceProvider extends PackageServiceProvider
             ->name('laravel-seo')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-seo_table')
-            ->hasRoute('web');
+            ->hasMigration('create_seo_table')
+            ->hasRoute('src/routes/web.php');
     }
 }
