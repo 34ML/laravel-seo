@@ -19,6 +19,6 @@ class SEOServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_seo_table')
-            ->hasRoute('src/routes/web.php');
+            ->hasRoute('src/routes/web');
     }
 }
