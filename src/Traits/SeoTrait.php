@@ -14,8 +14,6 @@ trait SeoTrait
 
     private array $keywords = [];
 
-    private $image = null;
-
     private $follow = null;
 
     /**
@@ -44,19 +42,12 @@ trait SeoTrait
                     'title' => $this->title,
                     'description' => $this->description,
                     'keywords' => $this->keywords,
-                    'image' => $this->image,
                     'follow_type' => $this->follow,
                     'params' => (object) [
                         'title_format' => $formatter,
                     ],
                 ];
             }
-        }
-
-        if ($attrs && isset($attrs['image']) && $attrs['image']) {
-            $attrs['image_path'] = ! str_contains($attrs['image'], '//')
-                ? Storage::disk(config('seo.disk'))->url($attrs['image'])
-                : $attrs['image'];
         }
 
         return $attrs;
@@ -87,7 +78,7 @@ trait SeoTrait
     }
 
     /**
-     * Get default SEO title
+     * Get default SEO keywords
      */
     public function getSeoKeywordsDefault(): array
     {
@@ -95,15 +86,7 @@ trait SeoTrait
     }
 
     /**
-     * Get default SEO title
-     */
-    public function getSeoImageDefault(): ?string
-    {
-        return $this->image;
-    }
-
-    /**
-     * Get default SEO title
+     * Get default SEO follow type
      */
     public function getSeoFollowDefault(): ?string
     {
@@ -158,9 +141,6 @@ trait SeoTrait
      */
     private function setDefaultValues(): void
     {
-        if (config('seo.default_seo_image')) {
-            $this->addImageDefault(asset(config('seo.default_seo_image')));
-        }
         foreach (config('seo.available_locales') as $locale) {
             $this->addTitleDefault(config('seo.default_seo_title', $locale));
             $this->addDescriptionDefault(config('seo.default_seo_description', $locale));
@@ -201,11 +181,6 @@ trait SeoTrait
             $locale = config('seo.fallback_locale');
         }
         $this->keywords[$locale] = $value;
-    }
-
-    public function addImageDefault(?string $value = null): void
-    {
-        $this->image = $value;
     }
 
     public function addFollowDefault(string $value): void

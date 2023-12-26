@@ -89,11 +89,6 @@ return [
     'default_follow_type' => env('SEO_DEFAULT_FOLLOW_TYPE', 'index, follow'),
 
     /*
-    * SEO default image
-    */
-    'default_seo_image' => null,
-
-    /*
       * SEO default title
       */
     'default_seo_title' => config('app.name'),
@@ -133,9 +128,6 @@ return [
     */
 
     'sitemap_path' => '/sitemap',
-
-    'disk' => env('SEO_IMAGE_DISK', 'public'),
-
     /*
     |--------------------------------------------------------------------------
     | Available Locales

@@ -32,10 +32,6 @@
 
     <meta property="og:title" content="{{ $seo['title'] }}" />
     <meta property="og:description" content="{{ $seo['description'] }}" />
-
-    @if(!empty($seo['image_path']))
-        <meta property="og:image" content="{{ $seo['image_path'] }}" />
-    @endif
 @else
     <meta name="robots" content="{{ !empty($seo['follow_type']) && config('seo.seo_status') ? $seo['follow_type'] : 'noindex, nofollow' }}" />
 @endif
