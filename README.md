@@ -13,14 +13,14 @@ composer require 34ml/laravel-seo
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-seo-migrations"
+php artisan vendor:publish --tag="seo-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-seo-config"
+php artisan vendor:publish --tag="seo-config"
 ```
 
 This is the contents of the published config file:
@@ -192,15 +192,9 @@ Then go to the top of your layout blade as the default is resources/views/welcom
 ```html
 ...
 <head>
-    @include('seo::seo')
+    @include('laravel-seo::seo')
     ...
 </head>
-```
-
-## Testing
-
-```bash
-composer test
 ```
 
 ## Changelog
