@@ -2,8 +2,6 @@
 
 namespace _34ML\SEO\Helpers;
 
-use Illuminate\Support\Facades\Storage;
-
 class Seo
 {
     /**

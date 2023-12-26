@@ -4,7 +4,6 @@ namespace _34ML\SEO\Traits;
 
 use _34ML\SEO\SEO;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Facades\Storage;
 
 trait SeoTrait
 {
