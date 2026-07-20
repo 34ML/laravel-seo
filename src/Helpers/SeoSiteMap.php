@@ -53,8 +53,8 @@ class SeoSiteMap
     /**
      * Attach a custom sitemap item
      *
-     * @param  string  $path    Path on the current site
-     * @param  string|null  $last_mod Date of last edit
+     * @param  string  $path  Path on the current site
+     * @param  string|null  $last_mod  Date of last edit
      * @return SeoSiteMap
      */
     public function attachCustom(string $path, ?string $last_mod = null): static
