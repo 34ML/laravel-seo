@@ -153,10 +153,7 @@ trait SeoTrait
     /**
      * REGISTERING THE DEFAULT VALUES IF EXISTS
      */
-    public function registerDefaultValues(): void
-    {
-
-    }
+    public function registerDefaultValues(): void {}
 
     public function addTitleDefault(?string $value = null, ?string $locale = null): void
     {
